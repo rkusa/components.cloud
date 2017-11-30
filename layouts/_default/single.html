@@ -1,0 +1,19 @@
+{{ partial "header.html" . }}
+
+<header>
+  <upvote-button class="pull-right" endpoint="https://us-central1-components-cloud-website.cloudfunctions.net/"></upvote-button>
+
+  <h1>{{ .Title }}</h1>
+  {{ if .Site.Params.dateform }}
+  <time datetime='{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}'>{{ .Date.Format .Site.Params.dateform }}</time>
+  {{ else }}
+  <time datetime='{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}'>{{ .Date.Format "Jan 2, 2006" }}</time>
+  {{ end }}
+</header>
+
+<section>
+  {{ .Content }}
+</section>
+
+<script src="/upvote-button.js"></script>
+{{ partial "footer.html" . }}

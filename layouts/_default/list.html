@@ -1,0 +1,16 @@
+{{ partial "header.html" . }}
+
+<header>
+  <h1>{{ .Site.Title }}</h1>
+</header>
+
+<section>
+  <h2>{{ .Title }}</h2>
+  <ul class="pages">
+  {{ range .Data.Pages }}
+    {{ partial "post.html" . }}
+  {{ end }}
+  </ul>
+</section>
+
+{{ partial "footer.html" . }}

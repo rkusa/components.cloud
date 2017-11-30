@@ -1,0 +1,25 @@
+{{ partial "header.html" . }}
+
+<header>
+  <h1>{{ .Site.Title }}</h1>
+</header>
+
+<section>
+  <h2>Latest Posts</h2>
+  <ul class="pages">
+  {{ range (where .Data.Pages.ByPublishDate.Reverse "Section" "posts") }}
+    {{ partial "post.html" . }}
+  {{ end }}
+  </ul>
+</section>
+
+<section>
+  <h2>Components</h2>
+  <ul class="components">
+  {{ range (where .Data.Pages.ByTitle.Reverse "Section" "components") }}
+    {{ partial "component.html" . }}
+  {{ end }}
+  </ul>
+</section>
+
+{{ partial "footer.html" . }}
