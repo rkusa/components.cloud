@@ -1,0 +1,364 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Self-contained Web Components through Serverless Computing</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/white.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <style>
+      /*-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"*/
+
+      .mail {
+        unicode-bidi: bidi-override;
+        direction: rtl;
+      }
+      .slides section:first-child h1 {
+        font-size: 130%;
+        font-weight: 300;
+      }
+      .slides section:first-child h1 b {
+        font-weight: 600;
+      }
+      .todo {
+        color: red;
+      }
+      .todo:before {
+        content: "TODO: ";
+      }
+      .mute {
+        font-weight: 400 !important;
+        text-transform: none;
+      }
+      .reveal section img {
+        border: none;
+        box-shadow: none;
+      }
+      .mermaid {
+        font-size: 18px !important;
+      }
+      .mermaid rect.actor {
+        fill: #98bdef;
+      }
+      .mermaid text.actor {
+        fill: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h1>Self-contained <b>Web Components</b> through <b>Serverless Computing</b></h1>
+          <p>
+            <small>
+              <a href="http://ma.rkusa.st">Markus Ast</a>, Martin Gaedke<br>
+              <span class="mail">ts.asukr@m</span>
+            </small>
+          </p>
+        </section>
+        <section>
+          <section data-transition="fade">
+            <h2>Traditional Stack</h2>
+            <img src="figures/traditional-1.svg">
+          </section>
+          <section data-transition="fade">
+            <h2>Traditional Stack</h2>
+            <img src="figures/traditional-2.svg">
+          </section>
+          <section>
+            <h2>Traditional Stack</h2>
+            <img src="figures/traditional-world.svg">
+          </section>
+          <section>
+            <h2>Traditional Stack</h2>
+            <img src="figures/latency-old.png" style="max-height: 60vh">
+            <p>
+              <small><a href="https://latency.apex.sh/?url=https%3A%2F%2Fold.smashingmagazine.com%2F&compare=">Latency</a> for Wordpress-based Smashing Magazine</small>
+            </p>
+          </section>
+        </section>
+        <section>
+          <section data-transition="fade">
+            <h2>Modern Stack</h2>
+            <img src="figures/modern-1.svg">
+          </section>
+          <section data-transition="fade">
+            <h2>Modern Stack</h2>
+            <img src="figures/modern-2.svg">
+          </section>
+          <section>
+            <h2>Web Services</h2>
+            <ul>
+              <li>Comments</li>
+              <li>Votes</li>
+              <li>Maps</li>
+              <li>Checkout</li>
+              <li>...</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Modern Stack</h2>
+            <img src="figures/modern-world.svg">
+          </section>
+          <section>
+            <h2>New Stack</h2>
+            <img src="figures/latency-new.png" style="max-height: 60vh">
+            <p>
+              <small><a href="https://latency.apex.sh/?url=https%3A%2F%2Fwww.smashingmagazine.com%2F&compare=">Latency</a> for JAMstack-based Smashing Magazine</small>
+            </p>
+          </section>
+        </section>
+
+        <section>
+          <h2>Example: UpVote Component</h2>
+
+          <upvote-button></upvote-button>
+        </section>
+
+        <section>
+          <h2>Integrate Functionality</h2>
+          <ul>
+            <li>Front-end part (UI)</li>
+            <li>Back-end part (Persist votes)</li>
+          </ul>
+          <p class="todo">Graphic</p>
+        </section>
+        <section>
+          <section>
+            <h2>Front-end (UI)</h2>
+            <pre><code class="hljs" data-trim contenteditable>
+<style>
+a {
+  cursor: pointer;
+  font-size: 1.3em;
+}
+a.voted {
+  font-weight: bold;
+}
+</style>
+
+<a>
+  <svg width="25px" viewBox="0 0 45 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+      <path d="M0,41 L8,41 L8,17 L0,17 L0,41 Z M44,19 C44.5,16.3 42.7,15 40.5,15 L27.88,15 L29.78,5.36 L29.84,4.72 C29.84,3.9 29.5,3.14 28.96,2.6 L26.84,0.5 L13.68,13.68 C12.94,14.4 12,15.4 12,16.5 L12,36.5 C12,38.7 14.3,41 16.5,41 L34.5,41 C36.16,41 37.58,39.5 38.18,38.06 L44.22,23.96 C44.4,23.5 44,23.02 44,22.5 L44,18.68 L44.48,18.66 L44,19 Z" fill="#abd692"></path>
+    </g>
+  </svg>
+  <span class="votes"></span>
+</a>
+            </code></pre>
+          </section>
+          <section>
+            <h2>Issues</h2>
+            <ul>
+              <li>HTML <b>and</b> CSS <b>and</b> JavaScript</li>
+              <li>Updates?</li>
+              <li>Style Isolation?</li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <h2>Web Components</h2>
+          <pre><code class="hljs" data-trim contenteditable>
+<script src="js/upvote-button.js"></script>
+<upvote-button></upvote-button>
+          </code></pre>
+        </section>
+
+        <section>
+          <section>
+            <h2>Back-end</h2>
+          </section>
+          <section data-transition="fade">
+            <h3>Infrastructure <span class="mute">as a Server</span>?</h3>
+            <ul>
+              <li class="fragment">Maintenance</li>
+              <li class="fragment">Different Stacks for different Components</li>
+              <li class="fragment">(Expensive)</li>
+              <li class="fragment">Global distribution expensive</li>
+            </ul>
+          </section>
+          <section data-transition="fade">
+            <h3>Platform <span class="mute">as a Server</span>?</h3>
+            <ul>
+              <li><strike>Maintenance</strike></li>
+              <li><strike>Different Stacks for different Components</strike></li>
+              <li>(Expensive)</li>
+              <li>Global distribution expensive</li>
+            </ul>
+          </section>
+          <section data-transition="fade">
+            <h3>Function <span class="mute">as a Server</span>?</h3>
+            <ul>
+              <li><strike>Maintenance</strike></li>
+              <li><strike>Different Stacks for different Components</strike></li>
+              <li><strike>(Expensive)</strike></li>
+              <li><strike>Global distribution expensive</strike></li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <h2>Demo</h2>
+
+          <upvote-button></upvote-button>
+        </section>
+
+        <section>
+          <section>
+            <h2>How does it work?</h2>
+          </section>
+
+          <section>
+            <pre><code class="hljs" data-trim contenteditable>
+  <script src="js/upvote-button.js"></script>
+  <upvote-button></upvote-button>
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code class="hljs" data-trim contenteditable>
+export default class UpVoteElement extends ServerlessComponent {
+  constructor() {
+    super({
+      git: 'https://github.com/rkusa/upvote-button-fns.git',
+      path: btoa(location.href),
+    })
+  }
+
+  initialize() {
+    this.load().catch(console.error)
+  }
+}
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code class="hljs" data-trim contenteditable>
+async load() {
+  // fetch vote count and render UI
+}
+
+async toggleVote() {
+  // increase/decrease vote count
+}
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Deployment</h2>
+
+            <div class="mermaid">
+            sequenceDiagram
+                participant U as User
+                participant C as Component
+                participant P as Cloud Provider
+
+                U->>C: click deploy
+                C->>P: redirect to
+                P-->>U: ask for deployment authorization
+                U->>P: authorize deployment
+                P->>P: deploy function
+                P-->>C: redirect back
+            </div>
+          </section>
+          <section>
+            <h3>Current Deployment</h3>
+
+            <div class="mermaid">
+            sequenceDiagram
+                participant U as User
+                participant C as Component
+                participant I as components.cloud
+                participant P as Cloud Provider
+
+                U->>C: click deploy
+                C->>I: redirect to
+                I-->>U: ask for deployment authorization
+                U->>I: authorize deployment
+                I->>P: deploy function
+                P-->>I: redirect back
+                I-->>C: redirect back
+            </div>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Future Deployment Service</h2>
+
+            <ul>
+              <li class="fragment">Deploy Git Repositoris directly as a function</li>
+              <li class="fragment">Update Functions from Git (using version tags)</li>
+              <li class="fragment">Possibility to choose/move between Cloud Providers</li>
+              <li class="fragment">
+                Interoperability between Cloud Providers
+                <ul>
+                  <li class="fragment">... also in terms of APIs for Blob, Datastorage, etc.</li>
+                </ul>
+              </li>
+            </ul>
+          </section>
+          <section>
+            <h2>Future Deployment Service</h2>
+
+            <ul>
+              <li class="fragment">
+                Easier deployment
+                <ul>
+                  <li class="fragment">Simplify <code>endpoint=""</code> attribute</li>
+                  <li class="fragment">Simplify Cloud Provider Setup</li>
+                  <li class="fragment">Better ways of detecting function state (undeployed, deploying, deployed)</li>
+                </ul>
+              </li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <p class="title">Thank you!</p>
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+    <script src="js/mermaid.min.js"></script>
+    <script src="js/upvote-button.js"></script>
+
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+        history: true,
+        dependencies: [
+          { src: 'plugin/markdown/marked.js' },
+          { src: 'plugin/markdown/markdown.js' },
+          { src: 'plugin/notes/notes.js', async: true },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+        ]
+      });
+
+      mermaid.initialize({startOnLoad:true});
+    </script>
+  </body>
+</html>
